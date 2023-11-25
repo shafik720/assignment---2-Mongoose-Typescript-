@@ -21,9 +21,9 @@ const addressSchema = new Schema<Address>({
 });
 
 const othersSchema = new Schema<Others>({
-  productName: { type: String, required: true },
-  price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
+  productName: { type: String, required : false},
+  price: { type: Number, required : false},
+  quantity: { type: Number, required : false },
 });
 
 const userSchema = new Schema<User>({
@@ -31,12 +31,12 @@ const userSchema = new Schema<User>({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   fullName: { type: fullNameSchema, required: true },
-  age: { type: Number, required: true, min: 1, max:3 },
+  age: { type: Number, required: true, min: 1, max:90 },
   email: { type: String, required: true },
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: { type: addressSchema, required: true },
-  others: { type: othersSchema, required: true },
+  others: { type: othersSchema, required : false},
 });
 
 export const UserModel = model<User>('User', userSchema);
