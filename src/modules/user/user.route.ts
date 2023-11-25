@@ -7,6 +7,9 @@ const router = express.Router();
 router.post('', UserController.createNewUser);
 
 // --- get all user data
-router.get('',UserController.getAllUser)
+router.get('', UserController.getAllUser);
+
+// --- get a single user by ID
+router.get('/:userId', UserController.getSingleUser);
 
 export const UserRoutes = router;

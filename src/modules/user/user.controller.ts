@@ -17,7 +17,7 @@ const createNewUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
-  } catch (err : any) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: err.message || 'Something Went Wrong',
@@ -36,7 +36,7 @@ const getAllUser = async (req: Request, res: Response) => {
       message: 'Users fetched successfully!',
       data: result,
     });
-  } catch (err : any) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: err.message || 'Something Went Wrong',
@@ -45,7 +45,32 @@ const getAllUser = async (req: Request, res: Response) => {
   }
 };
 
+// --- get a single user by ID
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    
+    const result = await UserServices.getSingleUser(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      error: {
+        code : 404,
+        description : 'User not found!'
+      },
+    });
+  }
+};
+
 export const UserController = {
   createNewUser,
   getAllUser,
+  getSingleUser
 };
