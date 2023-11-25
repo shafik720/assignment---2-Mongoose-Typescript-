@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { Address, FullName, Others, User } from './user.interface';
+import { Address, FullName, Others, User, UserModels } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 
@@ -29,7 +29,7 @@ const othersSchema = new Schema<Others>({
   quantity: { type: Number, required: false },
 });
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<User, UserModels>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: [true, 'Password is required'] },
@@ -62,4 +62,12 @@ userSchema.methods.toJSON = function () {
 };
 
 
-export const UserModel = model<User>('User', userSchema);
+
+// --- static method
+userSchema.statics.isUserExists = async function(userId : number){
+  const existingUser = await UserModel.findOne({userId}) ;
+  return existingUser ;
+}
+
+
+export const UserModel = model<User, UserModels>('User', userSchema);

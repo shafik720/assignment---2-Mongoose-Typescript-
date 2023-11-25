@@ -17,10 +17,10 @@ const createNewUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({
       success: false,
-      message: 'Something Went Wrong',
+      message: err.message || 'Something Went Wrong',
       error: err,
     });
   }
@@ -36,10 +36,10 @@ const getAllUser = async (req: Request, res: Response) => {
       message: 'Users fetched successfully!',
       data: result,
     });
-  } catch (err) {
+  } catch (err : any) {
     res.status(500).json({
       success: false,
-      message: 'Something Went Wrong',
+      message: err.message || 'Something Went Wrong',
       error: err,
     });
   }
