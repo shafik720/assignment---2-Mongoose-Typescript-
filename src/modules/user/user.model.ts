@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
 import { Address, FullName, Others, User } from './user.interface';
+import bcrypt from 'bcrypt' ;
+import config from '../../app/config';
 
 const fullNameSchema = new Schema<FullName>({
   firstName: {
@@ -38,5 +41,13 @@ const userSchema = new Schema<User>({
   address: { type: addressSchema, required: true },
   others: { type: othersSchema, required : false},
 });
+
+// --- pre save middleware
+// --- using to hashing password
+userSchema.pre('save', async function(next){
+  const user = this ;
+  user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds));
+  next() ; 
+}) 
 
 export const UserModel = model<User>('User', userSchema);
