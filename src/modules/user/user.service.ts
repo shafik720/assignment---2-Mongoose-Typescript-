@@ -9,7 +9,14 @@ const createNewUser = async(user : User) => {
     return result;
 }
 
+// --- get all user data
+const getAllUser = async() => {
+    // const result = await UserModel.find().select('username fullName age email address') ; 
+    const result = await UserModel.find().select('-_id -userId -hobbies -isActive -__v -fullName._id -address._id') ; 
+    return result ; 
+}
 
 export const UserServices = {
-    createNewUser
+    createNewUser,
+    getAllUser
 }
