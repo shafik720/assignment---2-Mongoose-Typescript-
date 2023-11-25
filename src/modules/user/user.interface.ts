@@ -16,7 +16,7 @@ export type Others = {
 };
 
 export type User = {
-  userId: string;
+  userId: number;
   username: string;
   password: string;
   fullName: FullName;
