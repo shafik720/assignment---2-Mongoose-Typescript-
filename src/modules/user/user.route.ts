@@ -12,4 +12,7 @@ router.get('', UserController.getAllUser);
 // --- get a single user by ID
 router.get('/:userId', UserController.getSingleUser);
 
+// --- update a user
+router.put('/:userId', UserController.updateUser);
+
 export const UserRoutes = router;
