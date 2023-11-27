@@ -22,29 +22,44 @@ const getAllUser = async () => {
 const getSingleUser = async (userId: number) => {
   const isUserExists = await UserModel.isUserExists(userId); //-- finding user's existence based on static method as mentioned in Assignment Requirement
   if (isUserExists) {
-    return UserModel.findOne({userId}).select(
+    return UserModel.findOne({ userId }).select(
       '-_id -__v -fullName._id -address._id',
     );
   } else {
     throw new Error('User not found !');
-  }  
+  }
 };
 
 // --- update a user
-const updateUser = async(userId : number, updatedDoc : User) => {
+const updateUser = async (userId: number, updatedDoc: User) => {
   const isUserExists = await UserModel.isUserExists(userId); //-- finding user's existence based on static method as mentioned in Assignment Requirement
-  if(!isUserExists){
+  if (!isUserExists) {
     throw new Error('User not found !');
-  }else if (isUserExists){
-    const filter = {userId} ; 
-    const doc = await UserModel.findOneAndUpdate(filter, updatedDoc, {new : true}) ; 
-    return doc ; 
+  } else if (isUserExists) {
+    const filter = { userId };
+    const doc = await UserModel.findOneAndUpdate(filter, updatedDoc, {
+      new: true,
+    });
+    return doc;
   }
-}
+};
+
+// --- delete a user
+const deleteUser = async (userId: number) => {
+  const isUserExists = await UserModel.isUserExists(userId); //-- static method to find user's existence
+  if (!isUserExists) {
+    throw new Error('User not found !');
+  } else if (isUserExists) {
+    const filter = { userId };
+    const doc = await UserModel.findOneAndDelete(filter);
+    return doc;
+  }
+};
 
 export const UserServices = {
   createNewUser,
   getAllUser,
   getSingleUser,
-  updateUser
+  updateUser,
+  deleteUser
 };
