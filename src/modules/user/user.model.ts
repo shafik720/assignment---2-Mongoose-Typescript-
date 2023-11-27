@@ -43,9 +43,10 @@ const userSchema = new Schema<User, UserModels>({
 });
 
 // --- pre save middleware
-// --- using to hashing password
+// --- using for hashing password
 userSchema.pre('save', async function (next) {
   const user = this;
+  console.log('Updated Password: ', user.password);
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
@@ -53,21 +54,32 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// --- this middleware will 'hash' the password, so that even after any update to the data password will be hash protected in db
+userSchema.pre(
+  'findOneAndUpdate', async function (next) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const user : any = this.getUpdate();
+    
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+    next();
+  },
+);
+
 // --- post save middleware
-// --- setting password field blank
+// --- removing password field in the response
 userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
   return userObject;
 };
 
-
-
 // --- static method
-userSchema.statics.isUserExists = async function(userId : number){
-  const existingUser = await UserModel.findOne({userId}) ;
-  return existingUser ;
-}
-
+userSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await UserModel.findOne({ userId });
+  return existingUser;
+};
 
 export const UserModel = model<User, UserModels>('User', userSchema);

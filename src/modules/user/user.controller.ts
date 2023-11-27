@@ -5,7 +5,7 @@ import { UserServices } from './user.service';
 // --- create a new user
 const createNewUser = async (req: Request, res: Response) => {
   try {
-    const users = req.body.users;
+    const users = req.body;
 
     // --- validating data with zod schema
     const zodParsedData = UserZodSchema.parse(users);
@@ -73,7 +73,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateUser = async(req: Request, res: Response) => {
   try{
     const userId = Number(req.params.userId) ; 
-    const updatedDoc = req.body.users ;
+    const updatedDoc = req.body ;
 
     const result = await UserServices.updateUser(userId, updatedDoc);
 
