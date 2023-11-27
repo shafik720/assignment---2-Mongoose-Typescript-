@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { Address, FullName, Others, User, UserModels } from './user.interface';
+import { Address, FullName, Orders, Others, User, UserModels } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 
@@ -29,6 +29,12 @@ const othersSchema = new Schema<Others>({
   quantity: { type: Number, required: false },
 });
 
+const orderSchema = new Schema<Orders>({
+  productName : {type : String, required : false},
+  price : {type : Number, required : false},
+  quantity : {type : Number, required : false}
+})
+
 const userSchema = new Schema<User, UserModels>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },
@@ -40,13 +46,13 @@ const userSchema = new Schema<User, UserModels>({
   hobbies: { type: [String], required: true },
   address: { type: addressSchema, required: true },
   others: { type: othersSchema, required: false },
+  orders : orderSchema
 });
 
 // --- pre save middleware
 // --- using for hashing password
 userSchema.pre('save', async function (next) {
   const user = this;
-  console.log('Updated Password: ', user.password);
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
@@ -54,7 +60,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// --- this middleware will 'hash' the password, so that even after any update to the data password will be hash protected in db
+// --- this middleware will 'hash' the password, so that even after any 'edit or update' to the data password will be hash protected in db
 userSchema.pre(
   'findOneAndUpdate', async function (next) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

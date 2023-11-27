@@ -1,4 +1,4 @@
-import { User } from './user.interface';
+import { Orders, User } from './user.interface';
 import { UserModel } from './user.model';
 
 // --- create a new user
@@ -56,10 +56,25 @@ const deleteUser = async (userId: number) => {
   }
 };
 
+// --- add a order
+const addOrder = async (userId: number, orderData: Orders) => {
+  const isUserExists = await UserModel.isUserExists(userId);
+
+  if (!isUserExists) {
+    throw new Error('User not found !');
+  } else if (isUserExists) {
+    const userFilter = { userId};
+    
+    const doc = await UserModel.updateOne(userFilter,{"$push" : {"orders" : orderData}},);
+    return doc;
+  }
+};
+
 export const UserServices = {
   createNewUser,
   getAllUser,
   getSingleUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  addOrder
 };

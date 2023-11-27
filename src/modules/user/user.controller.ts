@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserZodSchema } from './user.zod.validation';
 import { UserServices } from './user.service';
@@ -13,7 +14,7 @@ const createNewUser = async (req: Request, res: Response) => {
     const result = await UserServices.createNewUser(zodParsedData);
 
     res.status(200).json({
-      success: true,
+      success: true,  
       message: 'User created successfully!',
       data: result,
     });
@@ -118,10 +119,36 @@ const deleteUser = async(req: Request, res: Response) => {
 }
 }
 
+// --- add a order
+const addOrder = async(req: Request, res: Response) => {
+  try{
+    const userId = Number(req.params.userId) ; 
+    const orderData = req.body ; 
+
+    await UserServices.addOrder(userId, orderData);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      error: {
+        code : 404,
+        description : 'User not found!'
+      },
+    });
+}
+}
+
 export const UserController = {
   createNewUser,
   getAllUser,
   getSingleUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  addOrder
 };

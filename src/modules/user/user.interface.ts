@@ -17,6 +17,12 @@ export type Others = {
   quantity: number;
 };
 
+export type Orders = {
+  productName : string;
+  price : number,
+  quantity : number
+}
+
 export type User = {
   userId: number;
   username: string;
@@ -28,6 +34,7 @@ export type User = {
   hobbies: string[];
   address: Address;
   others ? : Others;
+  orders ? : Orders
 };
 
 // static method
