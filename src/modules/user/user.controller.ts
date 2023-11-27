@@ -99,12 +99,12 @@ const deleteUser = async(req: Request, res: Response) => {
   try{
     const userId = Number(req.params.userId) ; 
 
-    const result = await UserServices.deleteUser(userId);
+    await UserServices.deleteUser(userId);
 
     res.status(200).json({
       success: true,
       message: 'User deleted successfully!',
-      data: result,
+      data: null,
     });
   } catch (err: any) {
     res.status(404).json({
