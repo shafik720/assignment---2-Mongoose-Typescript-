@@ -125,12 +125,12 @@ const addOrder = async (req: Request, res: Response) => {
     const userId = Number(req.params.userId);
     const orderData = req.body;
 
-    await UserServices.addOrder(userId, orderData);
+    const result = await UserServices.addOrder(userId, orderData);
 
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
-      data: null,
+      data: result,
     });
   } catch (err: any) {
     res.status(404).json({
@@ -149,6 +149,7 @@ const getUserOrders = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
     const result = await UserServices.getAllOrders(userId);
+    
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',

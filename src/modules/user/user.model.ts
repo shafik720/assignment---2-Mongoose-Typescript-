@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { Address, FullName, Orders, Others, User, UserModels } from './user.interface';
+import { Address, FullName, Orders,  User, UserModels } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 
@@ -40,7 +40,6 @@ const userSchema = new Schema<User, UserModels>({
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: { type: addressSchema, required: true },
-  orders: { type: orderSchema, required : false }
 });
 
 // --- pre save middleware

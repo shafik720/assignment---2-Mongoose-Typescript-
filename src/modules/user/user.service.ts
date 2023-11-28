@@ -63,25 +63,28 @@ const addOrder = async (userId: number, orderData: Orders) => {
   if (!isUserExists) {
     throw new Error('User not found !');
   } else if (isUserExists) {
-    const userFilter = { userId};
-    
-    const doc = await UserModel.updateOne(userFilter,{"$push" : {"orders" : orderData}},);
+    const userFilter = { userId };
+
+    const doc = await UserModel.updateOne(userFilter, {
+      $push: { orders: orderData },
+    });
+
     return doc;
   }
 };
 
 // --- retrieve all order for a user
-const getAllOrders = async(userId : number) => {
-  const filter = {userId} ; 
+const getAllOrders = async (userId: number) => {
+  const filter = { userId };
   const isUserExists = await UserModel.isUserExists(userId);
-  if(!isUserExists){
-    throw new Error ('User not found !');
-  }else if(isUserExists){
-  const result  = await UserModel.findOne(filter).populate('orders');
-  console.log(result);
-  return result ;   
+  if (!isUserExists) {
+    throw new Error('User not found !');
+  } else if (isUserExists) {
+    const result = await UserModel.findOne(filter, 'orders');
+    
+    return result;
   }
-}
+};
 
 export const UserServices = {
   createNewUser,
@@ -90,5 +93,5 @@ export const UserServices = {
   updateUser,
   deleteUser,
   addOrder,
-  getAllOrders
+  getAllOrders,
 };
