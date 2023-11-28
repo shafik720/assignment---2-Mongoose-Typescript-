@@ -19,6 +19,9 @@ router.put('/:userId', UserController.updateUser);
 router.delete('/:userId', UserController.deleteUser);
 
 // --- add a order
-router.put('/:userId/orders', UserController.addOrder)
+router.put('/:userId/orders', UserController.addOrder);
+
+// --- retrieve all order for a user
+router.get('/:userId/orders', UserController.getUserOrders)
 
 export const UserRoutes = router;

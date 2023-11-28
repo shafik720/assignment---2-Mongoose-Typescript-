@@ -23,16 +23,11 @@ const addressSchema = new Schema<Address>({
   country: { type: String, required: true },
 });
 
-const othersSchema = new Schema<Others>({
-  productName: { type: String, required: false },
-  price: { type: Number, required: false },
-  quantity: { type: Number, required: false },
-});
 
 const orderSchema = new Schema<Orders>({
-  productName : {type : String, required : false},
-  price : {type : Number, required : false},
-  quantity : {type : Number, required : false}
+  productName : {type : String, required : true},
+  price : {type : Number, required : true},
+  quantity : {type : Number, required : true}
 })
 
 const userSchema = new Schema<User, UserModels>({
@@ -45,8 +40,7 @@ const userSchema = new Schema<User, UserModels>({
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: { type: addressSchema, required: true },
-  others: { type: othersSchema, required: false },
-  orders : orderSchema
+  orders: { type: orderSchema, required : false }
 });
 
 // --- pre save middleware

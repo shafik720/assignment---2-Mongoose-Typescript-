@@ -70,11 +70,25 @@ const addOrder = async (userId: number, orderData: Orders) => {
   }
 };
 
+// --- retrieve all order for a user
+const getAllOrders = async(userId : number) => {
+  const filter = {userId} ; 
+  const isUserExists = await UserModel.isUserExists(userId);
+  if(!isUserExists){
+    throw new Error ('User not found !');
+  }else if(isUserExists){
+  const result  = await UserModel.findOne(filter).populate('orders');
+  console.log(result);
+  return result ;   
+  }
+}
+
 export const UserServices = {
   createNewUser,
   getAllUser,
   getSingleUser,
   updateUser,
   deleteUser,
-  addOrder
+  addOrder,
+  getAllOrders
 };

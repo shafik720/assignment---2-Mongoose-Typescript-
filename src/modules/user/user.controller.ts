@@ -14,7 +14,7 @@ const createNewUser = async (req: Request, res: Response) => {
     const result = await UserServices.createNewUser(zodParsedData);
 
     res.status(200).json({
-      success: true,  
+      success: true,
       message: 'User created successfully!',
       data: result,
     });
@@ -50,7 +50,7 @@ const getAllUser = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
-    
+
     const result = await UserServices.getSingleUser(userId);
 
     res.status(200).json({
@@ -63,18 +63,18 @@ const getSingleUser = async (req: Request, res: Response) => {
       success: false,
       message: err.message || 'Something Went Wrong',
       error: {
-        code : 404,
-        description : 'User not found!'
+        code: 404,
+        description: 'User not found!',
       },
     });
   }
 };
 
 // --- update a user
-const updateUser = async(req: Request, res: Response) => {
-  try{
-    const userId = Number(req.params.userId) ; 
-    const updatedDoc = req.body ;
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const updatedDoc = req.body;
 
     const result = await UserServices.updateUser(userId, updatedDoc);
 
@@ -88,17 +88,17 @@ const updateUser = async(req: Request, res: Response) => {
       success: false,
       message: err.message || 'Something Went Wrong',
       error: {
-        code : 404,
-        description : 'User not found!'
+        code: 404,
+        description: 'User not found!',
       },
     });
-}
-}
+  }
+};
 
 // --- delete a user
-const deleteUser = async(req: Request, res: Response) => {
-  try{
-    const userId = Number(req.params.userId) ; 
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
 
     await UserServices.deleteUser(userId);
 
@@ -112,18 +112,18 @@ const deleteUser = async(req: Request, res: Response) => {
       success: false,
       message: err.message || 'Something Went Wrong',
       error: {
-        code : 404,
-        description : 'User not found!'
+        code: 404,
+        description: 'User not found!',
       },
     });
-}
-}
+  }
+};
 
 // --- add a order
-const addOrder = async(req: Request, res: Response) => {
-  try{
-    const userId = Number(req.params.userId) ; 
-    const orderData = req.body ; 
+const addOrder = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const orderData = req.body;
 
     await UserServices.addOrder(userId, orderData);
 
@@ -137,12 +137,34 @@ const addOrder = async(req: Request, res: Response) => {
       success: false,
       message: err.message || 'Something Went Wrong',
       error: {
-        code : 404,
-        description : 'User not found!'
+        code: 404,
+        description: 'User not found!',
       },
     });
-}
-}
+  }
+};
+
+// --- retrieve all order for a user
+const getUserOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const result = await UserServices.getAllOrders(userId);
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'Something Went Wrong',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    });
+  }
+};
 
 export const UserController = {
   createNewUser,
@@ -150,5 +172,6 @@ export const UserController = {
   getSingleUser,
   updateUser,
   deleteUser,
-  addOrder
+  addOrder,
+  getUserOrders
 };
