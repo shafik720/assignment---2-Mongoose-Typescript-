@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { Address, FullName, User, UserModels } from './user.interface';
+import { Address, FullName, Order, User, UserModels } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 
@@ -23,6 +23,13 @@ const addressSchema = new Schema<Address>({
   country: { type: String, required: true },
 });
 
+const orderSchema = new Schema<Order>({
+  productName: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
+});
+
+
 const userSchema = new Schema<User, UserModels>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },
@@ -33,6 +40,7 @@ const userSchema = new Schema<User, UserModels>({
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: { type: addressSchema, required: true },
+  orders: { type: [orderSchema], required: false },
 });
 
 // --- pre save middleware

@@ -11,6 +11,12 @@ const addressSchema = z.object({
   country: z.string(),
 });
 
+const orderSchema = z.object({
+  productName: z.string(),
+  price: z.number(),
+  quantity: z.number(),
+})
+
 const userSchema = z.object({
   userId: z.number(),
   username: z.string(),
@@ -21,6 +27,7 @@ const userSchema = z.object({
   isActive: z.boolean(),
   hobbies: z.array(z.string()),
   address: addressSchema,
+  orders : z.array(orderSchema).optional()
 });
 
 export const UserZodSchema = userSchema;

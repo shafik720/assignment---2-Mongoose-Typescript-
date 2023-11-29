@@ -11,7 +11,7 @@ export type Address = {
   country: string;
 };
 
-export type Orders = {
+export type Order = {
   productName: string;
   price: number;
   quantity: number;
@@ -27,6 +27,7 @@ export type User = {
   isActive: boolean;
   hobbies: string[];
   address: Address;
+  orders ? : Order[]
 };
 
 // static method

@@ -69,6 +69,7 @@ const addOrder = async (userId: number, orderData: Orders) => {
       $push: { orders: orderData },
     });
 
+    console.log(orderData);
     return doc;
   }
 };
