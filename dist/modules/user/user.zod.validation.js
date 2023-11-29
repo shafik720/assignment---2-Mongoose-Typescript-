@@ -11,11 +11,6 @@ const addressSchema = zod_1.z.object({
     city: zod_1.z.string(),
     country: zod_1.z.string(),
 });
-const othersSchema = zod_1.z.object({
-    productName: zod_1.z.string(),
-    price: zod_1.z.number(),
-    quantity: zod_1.z.number(),
-});
 const userSchema = zod_1.z.object({
     userId: zod_1.z.number(),
     username: zod_1.z.string(),
@@ -26,6 +21,5 @@ const userSchema = zod_1.z.object({
     isActive: zod_1.z.boolean(),
     hobbies: zod_1.z.array(zod_1.z.string()),
     address: addressSchema,
-    others: othersSchema.optional(),
 });
 exports.UserZodSchema = userSchema;

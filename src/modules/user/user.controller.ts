@@ -125,12 +125,12 @@ const addOrder = async (req: Request, res: Response) => {
     const userId = Number(req.params.userId);
     const orderData = req.body;
 
-    const result = await UserServices.addOrder(userId, orderData);
+    await UserServices.addOrder(userId, orderData);
 
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
-      data: result,
+      data: null,
     });
   } catch (err: any) {
     res.status(404).json({
@@ -198,5 +198,5 @@ export const UserController = {
   deleteUser,
   addOrder,
   getUserOrders,
-  totalPrice
+  totalPrice,
 };

@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export type FullName = {
   firstName: string;
@@ -11,12 +11,11 @@ export type Address = {
   country: string;
 };
 
-
 export type Orders = {
-  productName : string;
-  price : number,
-  quantity : number
-}
+  productName: string;
+  price: number;
+  quantity: number;
+};
 
 export type User = {
   userId: number;
@@ -31,7 +30,7 @@ export type User = {
 };
 
 // static method
-export interface UserModels extends Model<User>{
-    // eslint-disable-next-line no-unused-vars
-    isUserExists(id : number) : Promise<User | null>; 
+export interface UserModels extends Model<User> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExists(id: number): Promise<User | null>;
 }

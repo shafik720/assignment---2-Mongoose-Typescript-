@@ -34,8 +34,90 @@ const getSingleUser = (userId) => __awaiter(void 0, void 0, void 0, function* ()
         throw new Error('User not found !');
     }
 });
+// --- update a user
+const updateUser = (userId, updatedDoc) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExists = yield user_model_1.UserModel.isUserExists(userId); //-- finding user's existence based on static method as mentioned in Assignment Requirement
+    if (!isUserExists) {
+        throw new Error('User not found !');
+    }
+    else if (isUserExists) {
+        const filter = { userId };
+        const doc = yield user_model_1.UserModel.findOneAndUpdate(filter, updatedDoc, {
+            new: true,
+        });
+        return doc;
+    }
+});
+// --- delete a user
+const deleteUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExists = yield user_model_1.UserModel.isUserExists(userId); //-- static method to find user's existence
+    if (!isUserExists) {
+        throw new Error('User not found !');
+    }
+    else if (isUserExists) {
+        const filter = { userId };
+        const doc = yield user_model_1.UserModel.findOneAndDelete(filter);
+        return doc;
+    }
+});
+// --- add a order
+const addOrder = (userId, orderData) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExists = yield user_model_1.UserModel.isUserExists(userId);
+    if (!isUserExists) {
+        throw new Error('User not found !');
+    }
+    else if (isUserExists) {
+        const userFilter = { userId };
+        const doc = yield user_model_1.UserModel.updateOne(userFilter, {
+            $push: { orders: orderData },
+        });
+        return doc;
+    }
+});
+// --- retrieve all order for a user
+const getAllOrders = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const filter = { userId };
+    const isUserExists = yield user_model_1.UserModel.isUserExists(userId);
+    if (!isUserExists) {
+        throw new Error('User not found !');
+    }
+    else if (isUserExists) {
+        const result = yield user_model_1.UserModel.findOne(filter, 'orders');
+        return result;
+    }
+});
+// --- calculation the total price
+const totalPrice = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExists = yield user_model_1.UserModel.isUserExists(userId);
+    if (!isUserExists) {
+        throw new Error('User not found !');
+    }
+    else if (isUserExists) {
+        const result = yield user_model_1.UserModel.aggregate([
+            { $match: { userId } },
+            { $unwind: '$orders' },
+            {
+                $group: {
+                    _id: '$userId',
+                    totalPrice: {
+                        $sum: {
+                            $multiply: ['$orders.price', '$orders.quantity'],
+                        },
+                    },
+                },
+            },
+            { $project: { totalPrice: 1, _id: 0 } },
+        ]);
+        return result;
+    }
+});
 exports.UserServices = {
     createNewUser,
     getAllUser,
     getSingleUser,
+    updateUser,
+    deleteUser,
+    addOrder,
+    getAllOrders,
+    totalPrice,
 };

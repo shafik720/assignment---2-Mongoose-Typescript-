@@ -15,7 +15,7 @@ const user_service_1 = require("./user.service");
 // --- create a new user
 const createNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = req.body.users;
+        const users = req.body;
         // --- validating data with zod schema
         const zodParsedData = user_zod_validation_1.UserZodSchema.parse(users);
         const result = yield user_service_1.UserServices.createNewUser(zodParsedData);
@@ -68,7 +68,119 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             message: err.message || 'Something Went Wrong',
             error: {
                 code: 404,
-                description: 'User not found!'
+                description: 'User not found!',
+            },
+        });
+    }
+});
+// --- update a user
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        const updatedDoc = req.body;
+        const result = yield user_service_1.UserServices.updateUser(userId, updatedDoc);
+        res.status(200).json({
+            success: true,
+            message: 'User Updated successfully!',
+            data: result,
+        });
+    }
+    catch (err) {
+        res.status(404).json({
+            success: false,
+            message: err.message || 'Something Went Wrong',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+// --- delete a user
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        yield user_service_1.UserServices.deleteUser(userId);
+        res.status(200).json({
+            success: true,
+            message: 'User deleted successfully!',
+            data: null,
+        });
+    }
+    catch (err) {
+        res.status(404).json({
+            success: false,
+            message: err.message || 'Something Went Wrong',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+// --- add a order
+const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        const orderData = req.body;
+        yield user_service_1.UserServices.addOrder(userId, orderData);
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: null,
+        });
+    }
+    catch (err) {
+        res.status(404).json({
+            success: false,
+            message: err.message || 'Something Went Wrong',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+// --- retrieve all order for a user
+const getUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        const result = yield user_service_1.UserServices.getAllOrders(userId);
+        res.status(200).json({
+            success: true,
+            message: 'Order fetched successfully!',
+            data: result,
+        });
+    }
+    catch (err) {
+        res.status(404).json({
+            success: false,
+            message: err.message || 'Something Went Wrong',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+// --- calculation the total price
+const totalPrice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        const result = yield user_service_1.UserServices.totalPrice(userId);
+        res.status(200).json({
+            success: true,
+            message: 'Total price calculated successfully!',
+            data: result,
+        });
+    }
+    catch (err) {
+        res.status(404).json({
+            success: false,
+            message: err.message || 'Something Went Wrong',
+            error: {
+                code: 404,
+                description: 'User not found!',
             },
         });
     }
@@ -76,5 +188,10 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.UserController = {
     createNewUser,
     getAllUser,
-    getSingleUser
+    getSingleUser,
+    updateUser,
+    deleteUser,
+    addOrder,
+    getUserOrders,
+    totalPrice,
 };

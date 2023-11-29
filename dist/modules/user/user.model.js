@@ -34,11 +34,6 @@ const addressSchema = new mongoose_1.Schema({
     city: { type: String, required: true },
     country: { type: String, required: true },
 });
-const othersSchema = new mongoose_1.Schema({
-    productName: { type: String, required: false },
-    price: { type: Number, required: false },
-    quantity: { type: Number, required: false },
-});
 const userSchema = new mongoose_1.Schema({
     userId: { type: Number, required: true, unique: true },
     username: { type: String, required: true, unique: true },
@@ -49,10 +44,9 @@ const userSchema = new mongoose_1.Schema({
     isActive: { type: Boolean, required: true },
     hobbies: { type: [String], required: true },
     address: { type: addressSchema, required: true },
-    others: { type: othersSchema, required: false },
 });
 // --- pre save middleware
-// --- using to hashing password
+// --- using for hashing password
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = this;
@@ -60,8 +54,17 @@ userSchema.pre('save', function (next) {
         next();
     });
 });
+// --- this middleware will 'hash' the password, so that even after any 'edit or update' to the data password will be hash protected in db
+userSchema.pre('findOneAndUpdate', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const user = this.getUpdate();
+        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt_rounds));
+        next();
+    });
+});
 // --- post save middleware
-// --- setting password field blank
+// --- removing password field in the response
 userSchema.methods.toJSON = function () {
     const userObject = this.toObject();
     delete userObject.password;

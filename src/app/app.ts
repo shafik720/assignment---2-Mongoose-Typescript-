@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // --- using router
-app.use('/api/users', UserRoutes) ; 
+app.use('/api/users', UserRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Server Running Successfully ');

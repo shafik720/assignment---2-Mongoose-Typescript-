@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { Address, FullName, Orders,  User, UserModels } from './user.interface';
+import { Address, FullName, User, UserModels } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../app/config';
 
@@ -22,13 +22,6 @@ const addressSchema = new Schema<Address>({
   city: { type: String, required: true },
   country: { type: String, required: true },
 });
-
-
-const orderSchema = new Schema<Orders>({
-  productName : {type : String, required : true},
-  price : {type : Number, required : true},
-  quantity : {type : Number, required : true}
-})
 
 const userSchema = new Schema<User, UserModels>({
   userId: { type: Number, required: true, unique: true },
@@ -54,18 +47,16 @@ userSchema.pre('save', async function (next) {
 });
 
 // --- this middleware will 'hash' the password, so that even after any 'edit or update' to the data password will be hash protected in db
-userSchema.pre(
-  'findOneAndUpdate', async function (next) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const user : any = this.getUpdate();
-    
-    user.password = await bcrypt.hash(
-      user.password,
-      Number(config.bcrypt_salt_rounds),
-    );
-    next();
-  },
-);
+userSchema.pre('findOneAndUpdate', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const user: any = this.getUpdate();
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
 
 // --- post save middleware
 // --- removing password field in the response

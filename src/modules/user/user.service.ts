@@ -93,19 +93,19 @@ const totalPrice = async (userId: number) => {
     throw new Error('User not found !');
   } else if (isUserExists) {
     const result = await UserModel.aggregate([
-      {$match : {userId}},
-      {$unwind : "$orders"},
+      { $match: { userId } },
+      { $unwind: '$orders' },
       {
-        $group : {
-          _id : "$userId",
-          totalPrice : {
-            $sum : {
-              $multiply : ['$orders.price', '$orders.quantity']
-            }
-          } 
-        }
+        $group: {
+          _id: '$userId',
+          totalPrice: {
+            $sum: {
+              $multiply: ['$orders.price', '$orders.quantity'],
+            },
+          },
+        },
       },
-      {$project : {"totalPrice" : 1, "_id" : 0}}
+      { $project: { totalPrice: 1, _id: 0 } },
     ]);
 
     return result;
@@ -120,5 +120,5 @@ export const UserServices = {
   deleteUser,
   addOrder,
   getAllOrders,
-  totalPrice
+  totalPrice,
 };

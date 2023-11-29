@@ -11,12 +11,6 @@ const addressSchema = z.object({
   country: z.string(),
 });
 
-const orderSchema = z.object({
-  productName: z.string(),
-  price: z.number(),
-  quantity: z.number(),
-});
-
 const userSchema = z.object({
   userId: z.number(),
   username: z.string(),
