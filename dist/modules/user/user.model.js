@@ -34,6 +34,11 @@ const addressSchema = new mongoose_1.Schema({
     city: { type: String, required: true },
     country: { type: String, required: true },
 });
+const orderSchema = new mongoose_1.Schema({
+    productName: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+});
 const userSchema = new mongoose_1.Schema({
     userId: { type: Number, required: true, unique: true },
     username: { type: String, required: true, unique: true },
@@ -44,6 +49,7 @@ const userSchema = new mongoose_1.Schema({
     isActive: { type: Boolean, required: true },
     hobbies: { type: [String], required: true },
     address: { type: addressSchema, required: true },
+    orders: { type: [orderSchema], required: false },
 });
 // --- pre save middleware
 // --- using for hashing password

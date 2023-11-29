@@ -6,7 +6,7 @@ import { UserServices } from './user.service';
 // --- create a new user
 const createNewUser = async (req: Request, res: Response) => {
   try {
-    const users = req.body; 
+    const users = req.body;
 
     // --- validating data with zod schema
     const zodParsedData = UserZodSchema.parse(users);

@@ -1,4 +1,4 @@
-import { Orders, User } from './user.interface';
+import { Order, User } from './user.interface';
 import { UserModel } from './user.model';
 
 // --- create a new user
@@ -57,7 +57,7 @@ const deleteUser = async (userId: number) => {
 };
 
 // --- add a order
-const addOrder = async (userId: number, orderData: Orders) => {
+const addOrder = async (userId: number, orderData: Order) => {
   const isUserExists = await UserModel.isUserExists(userId);
 
   if (!isUserExists) {

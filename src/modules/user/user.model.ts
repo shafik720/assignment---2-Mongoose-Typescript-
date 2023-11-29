@@ -29,7 +29,6 @@ const orderSchema = new Schema<Order>({
   quantity: { type: Number, required: true },
 });
 
-
 const userSchema = new Schema<User, UserModels>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true, unique: true },

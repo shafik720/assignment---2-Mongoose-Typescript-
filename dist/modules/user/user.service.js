@@ -71,6 +71,7 @@ const addOrder = (userId, orderData) => __awaiter(void 0, void 0, void 0, functi
         const doc = yield user_model_1.UserModel.updateOne(userFilter, {
             $push: { orders: orderData },
         });
+        console.log(orderData);
         return doc;
     }
 });
